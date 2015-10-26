@@ -1,0 +1,59 @@
+{
+  "name": "delayed-do",
+  "version": "1.0.0",
+  "description": "Replacements for setTimeout and setInterval that aren't updated by the browser.",
+  "main": "lib/index.js",
+  "jsnext:main": "src/index.js",
+  "scripts": {
+    "clean": "rimraf lib dist",
+    "test": "mocha --compilers js:babel/register spec",
+    "lint": "eslint src spec",
+    "check": "npm run lint && npm run test",
+    "build:lib": "babel src --out-dir lib",
+    "build:umd": "webpack src/index.js dist/delayed-do.js --config webpack.config.development.js",
+    "build:umd:min": "webpack src/index.js dist/delayed-do.min.js --config webpack.config.production.js",
+    "build": "npm run build:lib && npm run build:umd && npm run build:umd:min",
+    "preversion": "npm run clean && npm run check",
+    "version": "npm run build",
+    "postversion": "git push && git push --tags && npm run clean",
+    "prepublish": "npm run clean && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uken/delayed-do.git"
+  },
+  "keywords": [
+    "setTimeout",
+    "setInterval",
+    "controlled",
+    "dt",
+    "deltaTime",
+    "timed",
+    "async"
+  ],
+  "author": "Tanner Rogalsky",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/uken/delayed-do/issues"
+  },
+  "homepage": "https://github.com/uken/delayed-do",
+  "devDependencies": {
+    "babel": "^5.8.23",
+    "babel-core": "^5.8.25",
+    "babel-loader": "^5.3.2",
+    "eslint": "^1.7.1",
+    "expect": "^1.12.2",
+    "mocha": "^2.2.4",
+    "rimraf": "^2.4.3",
+    "webpack": "^1.12.2"
+  },
+  "npmName": "delayed-do",
+  "npmFileMap": [
+    {
+      "basePath": "/dist/",
+      "files": [
+        "*.js"
+      ]
+    }
+  ]
+}
