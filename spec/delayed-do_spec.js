@@ -42,6 +42,12 @@ describe('delayedDo', function() {
       expect(counter).toEqual(2);
     });
 
+    it('executes once even if the time is 0', function() {
+      const c = delayedDo.after(0, count);
+      c.update(1);
+      expect(counter).toEqual(1);
+    });
+
     it('produces a clock that can be expired', function() {
       const c = delayedDo.after(2, count);
       expect(c.update(1)).toEqual(null);
