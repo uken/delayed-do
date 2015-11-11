@@ -5,6 +5,7 @@ describe('delayedDo', function() {
   let counter = 0;
   const count = function(amount = 1){
     counter += amount;
+    return counter;
   };
 
   beforeEach(function() {
@@ -41,6 +42,20 @@ describe('delayedDo', function() {
       expect(counter).toEqual(2);
     });
 
+    it('produces a clock that can be expired', function() {
+      const c = delayedDo.after(2, count);
+      expect(c.update(1)).toEqual(null);
+      expect(c.update(1)).toEqual(1);
+      expect(c.update(1)).toEqual(null);
+    });
+
+    it('returns the return value of the callback if it was run', function() {
+      const c = delayedDo.after(2, count);
+      expect(c.update(1)).toEqual(null);
+      expect(c.update(1)).toEqual(1);
+      expect(c.update(1)).toEqual(null);
+    });
+
     it('respects bound function behaviour', function() {
       const boundCount = count.bind(count, 2);
       const c = delayedDo.after(1, boundCount, 1);
@@ -70,6 +85,18 @@ describe('delayedDo', function() {
 
       c.update(1);
       expect(counter).toEqual(2);
+    });
+
+    it('executes the same action multiple times on a single update if appropiate', function() {
+      const c = delayedDo.every(1, count);
+      c.update(2);
+      expect(counter).toEqual(2);
+    });
+
+    it('returns all the returned values of the callback if it was run', function() {
+      const c = delayedDo.every(1, count);
+      expect(c.update(1)).toEqual(1);
+      expect(c.update(2)).toEqual([2, 3]);
     });
 
     it('respects bound function behaviour', function() {
