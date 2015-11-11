@@ -1,9 +1,10 @@
 class Entry {
-  constructor(time, callback, update) {
+  constructor(time, callback, update, args) {
     this.time = time;
     this.callback = callback;
     this.running = 0;
     this.update = update;
+    this.args = args;
   }
 
   get remaining() {
@@ -23,7 +24,9 @@ const updateAfterEntry = function(dt) {
   this.running += dt;
 
   if (this.running >= this.time) {
-    return this.callback();
+    return this.callback(...this.args);
+  } else {
+    return null;
   }
 };
 
@@ -32,19 +35,19 @@ const updateEveryEntry = function(dt) {
 
   const results = [];
   while (this.running >= this.time) {
-    results.push(this.callback());
+    results.push(this.callback(...this.args));
     this.running -= this.time;
   }
   return results.length === 1 ? results[0] : results;
 };
 
-const after = function(time, callback) {
-  const entry = new Entry(time, callback, updateAfterEntry);
+const after = function(time, callback, ...args) {
+  const entry = new Entry(time, callback, updateAfterEntry, args);
   return entry;
 };
 
-const every = function(time, callback) {
-  const entry = new Entry(time, callback, updateEveryEntry);
+const every = function(time, callback, ...args) {
+  const entry = new Entry(time, callback, updateEveryEntry, args);
   return entry;
 };
 

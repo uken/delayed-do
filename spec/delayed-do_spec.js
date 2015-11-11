@@ -40,6 +40,19 @@ describe('delayedDo', function() {
       c2.update(1);
       expect(counter).toEqual(2);
     });
+
+    it('respects bound function behaviour', function() {
+      const boundCount = count.bind(count, 2);
+      const c = delayedDo.after(1, boundCount, 1);
+      c.update(1);
+      expect(counter).toEqual(2);
+    });
+
+    it('passes arguments to the callback', function() {
+      const c = delayedDo.after(1, count, 2);
+      c.update(1);
+      expect(counter).toEqual(2);
+    });
   });
 
   describe('#every', function() {
@@ -57,6 +70,19 @@ describe('delayedDo', function() {
 
       c.update(1);
       expect(counter).toEqual(2);
+    });
+
+    it('respects bound function behaviour', function() {
+      const boundCount = count.bind(count, 2);
+      const c = delayedDo.every(1, boundCount, 1);
+      c.update(1);
+      expect(counter).toEqual(2);
+    });
+
+    it('passes arguments to the callback', function() {
+      const c = delayedDo.every(1, count, 2);
+      c.update(2);
+      expect(counter).toEqual(4);
     });
   });
 });
