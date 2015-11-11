@@ -17,7 +17,7 @@ class Entry {
 }
 
 const updateAfterEntry = function(dt) {
-  if (this.running >= this.time) {
+  if (this.running != 0 && this.running >= this.time) {
     return null;
   }
 
