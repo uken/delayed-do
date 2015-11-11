@@ -1,6 +1,6 @@
 {
   "name": "delayed-do",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Replacements for setTimeout and setInterval that aren't updated by the browser.",
   "main": "lib/index.js",
   "jsnext:main": "src/index.js",
