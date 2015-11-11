@@ -3,7 +3,7 @@ import * as delayedDo from '../src/index';
 
 describe('delayedDo', function() {
   let counter = 0;
-  const count = function(amount = 1){
+  const count = function(amount = 1) {
     counter += amount;
     return counter;
   };
