@@ -70,7 +70,7 @@ describe('delayedDo', function() {
     });
   });
 
-  describe('#every', function() {
+  describe('every', function() {
     it('invokes callback periodically', function() {
       const c = delayedDo.every(3, count);
 
