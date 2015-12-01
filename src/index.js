@@ -18,7 +18,7 @@ class Entry {
 
 const updateAfterEntry = function(dt) {
   if (this.running !== 0 && this.running >= this.time) {
-    return null;
+    return false;
   }
 
   this.running += dt;
@@ -26,19 +26,27 @@ const updateAfterEntry = function(dt) {
   if (this.running >= this.time) {
     return this.callback(...this.args);
   } else {
-    return null;
+    return false;
   }
 };
 
 const updateEveryEntry = function(dt) {
   this.running = this.running + dt;
 
-  const results = [];
-  while (this.running >= this.time) {
-    results.push(this.callback(...this.args));
+  const iterations = Math.floor(this.running / this.time);
+  if (iterations === 0) {
+    return false;
+  } else if (iterations === 1) {
     this.running -= this.time;
+    return this.callback(...this.args);
+  } else {
+    const results = [];
+    while (this.running >= this.time) {
+      results.push(this.callback(...this.args));
+      this.running -= this.time;
+    }
+    return results;
   }
-  return results.length === 1 ? results[0] : results;
 };
 
 const after = function(time, callback, ...args) {
