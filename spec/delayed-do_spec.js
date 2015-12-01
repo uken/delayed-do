@@ -49,17 +49,22 @@ describe('delayedDo', function() {
     });
 
     it('produces a clock that can be expired', function() {
-      const c = delayedDo.after(2, count);
-      expect(c.update(1)).toEqual(null);
+      const c = delayedDo.after(1, count);
       expect(c.update(1)).toEqual(1);
-      expect(c.update(1)).toEqual(null);
+      expect(c.update(1)).toEqual(false);
     });
 
     it('returns the return value of the callback if it was run', function() {
       const c = delayedDo.after(2, count);
-      expect(c.update(1)).toEqual(null);
-      expect(c.update(1)).toEqual(1);
-      expect(c.update(1)).toEqual(null);
+      expect(c.update(2)).toEqual(1);
+    });
+
+    it('returns false if the callback did not trigger', function() {
+      const c = delayedDo.after(2, count);
+      expect(c.update(0)).toEqual(false);
+      expect(c.update(1)).toEqual(false);
+      c.update(1);
+      expect(c.update(1)).toEqual(false);
     });
 
     it('respects bound function behaviour', function() {
@@ -103,6 +108,14 @@ describe('delayedDo', function() {
       const c = delayedDo.every(1, count);
       expect(c.update(1)).toEqual(1);
       expect(c.update(2)).toEqual([2, 3]);
+    });
+
+    it('returns false if the callback did not trigger', function() {
+      const c = delayedDo.every(2, count);
+      expect(c.update(0)).toEqual(false);
+      expect(c.update(1)).toEqual(false);
+      c.update(1);
+      expect(c.update(1)).toEqual(false);
     });
 
     it('respects bound function behaviour', function() {
